@@ -11,6 +11,21 @@
 </head>
 
 <body>	
+	<div id='menu'>
+		<a href='/'>Home</a>
+
+		<!-- Menu for logged in users-->
+		<?php if($user): ?>
+			<a href='/users/logout'>Logout</a>
+			<a href='/users/profile'>Profile</a>
+
+		<!-- Menu for non-logged in -->
+		<?php else: ?>
+			<a href='/users/signup'>Sign up</a>
+			<a href='/users/login'>Log in</a>
+
+		<?php endif; ?>
+	</div>
 
 	<?php if(isset($content)) echo $content; ?>
 
