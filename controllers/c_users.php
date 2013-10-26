@@ -7,7 +7,12 @@ class users_controller extends base_controller {
     } 
 
     public function index() {
-        echo "This is the index page";
+        // $this->template->content = View::instance('v_index_index');
+        // $this->template->client_files_body = '<script type="text/javascript" src="/js/sign.js"></script>';
+
+        // $this->template->content->error = $error;
+
+        echo $this->template;
     }
 
     public function signup() {
@@ -28,6 +33,10 @@ class users_controller extends base_controller {
         $_POST['created'] = Time::now();
         $_POST['modified'] = Time::now();
 
+        $_POST['location'] = "Location...";
+        $_POST['website'] = "Website...";
+        $_POST['bio'] = "Bio...";
+
         // Encrypt the password
         $_POST['password'] = sha1(PASSWORD_SALT.$_POST['password']);
 
@@ -37,7 +46,7 @@ class users_controller extends base_controller {
         // Insert this user into the database (and introduce him to Tron...)
         $user_id = DB::instance(DB_NAME)->insert('users',$_POST);
 
-        echo 'You are entering the World of Chaos.  The end of your life draws near.  Ah-uh-ah-uh-ah';
+        Router::redirect ('/users/login');
     }   
 
 
@@ -87,7 +96,7 @@ class users_controller extends base_controller {
         setcookie("token", $token, strtotime('+1 year'), '/');
 
         // Send them to the main page - or wherever
-        Router::redirect("/index");    
+        Router::redirect("/users/profile");    
         }
     }
 
@@ -119,16 +128,28 @@ class users_controller extends base_controller {
         
         $this->template->content = View::instance('v_users_profile');
         $this->template->title = "Profile of ".$this->user->first_name;
-        $this->template->content->user_name = $user_name;
         
-        $client_files_head = Array("/css/profile.css");
-        $this->template->client_files_head = Utils::load_client_files($client_files_head); 
-       
-        $client_files_body = Array("/js/profile.min.js");
-        $this->template->client_files_body = Utils::load_client_files($client_files_body);
+        // $client_files_head = Array("/bootstrap3-editable/css/bootstrap3-editable.css", "/bootstrap3-editable/js/bootstrap3-editable.js");
+        // $this->template->client_files_head = Utils::load_client_files($client_files_head); 
+        
+        //$client_files_body = ("/js/profile.js");
+        $this->template->client_files_body = '<script type="text/javascript" src="../js/profile.js"></script><link href="../bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"><script src="../bootstrap3-editable/js/bootstrap-editable.js"></script>';//Utils::load_client_files($client_files_body);
         
         echo $this->template;
 
+    }
+
+    public function p_edit_profile(){
+        foreach ($_POST as $key => $value){
+                    if ($_POST[$key] == ""){
+                        unset($_POST[$key]);
+                    }
+        }
+        $q = [$_POST['name'] => $_POST['value']];
+
+           
+        DB::instance(DB_NAME)->update('users',$q,'WHERE user_id = '.$_POST['pk']);
+        Router::redirect('/users/profile');
     }
 
 } # end of the class
