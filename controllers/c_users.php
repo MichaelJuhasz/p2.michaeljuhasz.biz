@@ -1,8 +1,6 @@
 <?php
 class users_controller extends base_controller {
 
-    public $results = Array();
-
     public function __construct() {
         parent::__construct();
         //echo "users_controller construct called<br><br>";
@@ -64,15 +62,18 @@ class users_controller extends base_controller {
 
         }
         # Insert this user into the database (and introduce him to Tron...)
-        $user_id = DB::instance(DB_NAME)->insert('users',$_POST);
+        DB::instance(DB_NAME)->insert('users',$_POST);
 
         # Now let's go ahead and sign in
         $token = Token::look_for_token($_POST['email'], $_POST['password']);
         setcookie("token", $token, strtotime('+1 year'), '/');
 
-        // # Finally, user should be following him or herself
-        // $insert = Array("created"=>Time::now(), "user_id"=>$this->user->user_id, "user_id_followed"=> $this->user->user_id);  
-        // DB::instance(DB_NAME)->insert("users_users",$insert);
+        # Finally, user should be following him or herself 
+        $q = "SELECT user_id FROM users WHERE email = '".$_POST['email']."'";
+        $user_id = DB::instance(DB_NAME)->select_field($q);        
+
+        $insert = Array("created"=>Time::now(), "user_id"=>$user_id, "user_id_followed"=> $user_id);  
+        DB::instance(DB_NAME)->insert("users_users",$insert);
 
         Router::redirect ('/users/profile');
     }   
@@ -233,16 +234,16 @@ class users_controller extends base_controller {
             OR email LIKE '%".$_POST['search']."%'";   
 
         # Query and put the results in the $results array
-        global $results = DB::instance(DB_NAME)->select_rows($q);
+        $results = DB::instance(DB_NAME)->select_rows($q);
 
-        # Package up the array for ease of transport 
-        // $results = serialize($results);
+    //     # Package up the array for ease of transport 
+    //     // $results = serialize($results);
 
-        # Ship out the data 
-        Router::redirect("/users/search/");
-    }
+    //     # Ship out the data 
+    //     Router::redirect("/users/search/");
+    // }
 
-    public function search($results = NULL){
+    // public function search($results = NULL){
 
         # Unpackage data  
         //$results = unserialize($results);
@@ -251,7 +252,7 @@ class users_controller extends base_controller {
         $this->template->content1 = View::instance('v_users_search');
 
         # Load results into template 
-        $this->template->content1->results = global $results;
+        $this->template->content1->results = $results;
 
         echo $this->template;
     }
