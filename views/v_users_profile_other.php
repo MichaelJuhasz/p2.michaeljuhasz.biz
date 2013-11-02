@@ -1,7 +1,8 @@
 
-<div class="container" id="profile">
-	<div class="row"> 
-		<div class="col-md-3">
+<div class="container">
+	<div id="profile_and_add" class="col-md-10"> 
+		<div class="row">
+			<div class="col-md-5" id="profile">
 			<h1>
 				<?=$user[0]['first_name'];?> <?=$user[0]['last_name'];?>
 			</h1>

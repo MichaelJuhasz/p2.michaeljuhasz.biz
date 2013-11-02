@@ -6,21 +6,12 @@ class users_controller extends base_controller {
         //echo "users_controller construct called<br><br>";
     } 
 
-    public function index() {
-        // $this->template->content = View::instance('v_index_index');
-        // $this->template->client_files_body = '<script type="text/javascript" src="/js/sign.js"></script>';
-
-        // $this->template->content->error = $error;
-
-        echo $this->template;
-    }
-
     public function signin($error = NULL) {
         # Setup view 
 
         $this->template->content1 = View::instance('v_users_signup');
         $this->template->content2 = View::instance('v_users_login');
-        $this->template->title = "Hubbub - Sign In";
+        $this->template->title = "Soapbox - Sign In";
 
         $this->template->content1->error = $error;
         $this->template->content2->error = $error;
@@ -33,9 +24,6 @@ class users_controller extends base_controller {
     }
 
     public function p_signup(){
-        // echo'<pre>';
-        // print_r($_POST);
-        // echo '</pre>';
 
         # Extra junk to add to DB 
         $_POST['created'] = Time::now();
@@ -77,17 +65,6 @@ class users_controller extends base_controller {
 
         Router::redirect ('/users/profile');
     }   
-
-
-    public function login($error = NULL) {
-        $this->template->content1 = View::instance('v_users_login');
-        $this->template->title = "Login";
-
-        # Pass data to the view 
-        $this->template->content1->error = $error;
-
-        echo $this->template; 
-    }
 
     public function p_login(){
         # Sanitize the user entered data
@@ -148,7 +125,7 @@ class users_controller extends base_controller {
         # Whether we're looking at our profile or another's,
         # there will be posts loaded, so start with this
 
-        $this->template->content2 = View::instance('v_posts_index');
+        $this->template->content3 = View::instance('v_posts_index');
 
         # We're also going to use the same CSS, so load that
 
@@ -163,10 +140,10 @@ class users_controller extends base_controller {
             $this->template->content1 = View::instance('v_users_profile_self');
 
         # Load up the add post widget 
-            $this->template->content3 = View::instance('v_posts_add');
+            $this->template->content2 = View::instance('v_posts_add');
 
         # Grab the posts associated with this user 
-            $this->template->content2->posts = Post::get_posts_by_user($this->user->user_id);
+            $this->template->content3->posts = Post::get_posts_by_user($this->user->user_id);
 
         # Load the title from the user object's name properties 
             $this->template->title = "Profile of ".$this->user->first_name." ".$this->user->last_name;
@@ -191,7 +168,7 @@ class users_controller extends base_controller {
             $this->template->content1->user = $user;
 
         # Grab the posts associated with this user        
-            $this->template->content2->posts = Post::get_posts_by_user($user_id);
+            $this->template->content3->posts = Post::get_posts_by_user($user_id);
 
         # Get the title out of $users 
             $this->template->title = "Profile of ".$user[0]['first_name']." ".$user[0]['last_name'];
@@ -204,7 +181,7 @@ class users_controller extends base_controller {
 
         $connections = DB::instance(DB_NAME)->select_array($q, 'user_id_followed');
 
-        $this->template->content2->connections = $connections;
+        $this->template->content3->connections = $connections;
         $this->template->content1->connections = $connections;
 
         # Go!
@@ -247,6 +224,9 @@ class users_controller extends base_controller {
 
         # Unpackage data  
         //$results = unserialize($results);
+
+         $client_files_head = Array("/css/search.css");
+        $this->template->client_files_head = Utils::load_client_files($client_files_head); 
 
         # Display results
         $this->template->content1 = View::instance('v_users_search');
