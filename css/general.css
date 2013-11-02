@@ -1,0 +1,18 @@
+@media (min-width: 980px){
+	body {
+		padding: 60px 0px 60px;
+	}
+}
+
+/*http://www.jankoatwarpspeed.com/css-message-boxes-for-different-message-types/*/
+p.error {
+	font-size       : .8em; 
+	border          : 1px solid red;
+	margin          : 10px;
+	padding         : 5px 0px 5px 35px;
+	color           : #D8000C;
+	background-color: #FFBABA;
+	background-image: url('/images/errorSmall.png');
+	background-repeat: no-repeat;
+	background-position: left center;
+}

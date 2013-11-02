@@ -2,10 +2,18 @@
 <div class="container" id="profile">
 	<div class="row"> 
 		<div class="col-md-3">
-			<p>
+			<h1>
 				<a href="#" id="first_name" name="first_name" data-type="text" data-pk=<?=$user->user_id?> data-url="../users/p_edit_profile"><?=$user->first_name ?></a>
 		 		<a href="#" id="last_name" name="last_name" data-type="text" data-pk=<?=$user->user_id?> data-url="../users/p_edit_profile"><?=$user->last_name ?></a>
-		 	</p>
+		 	</h1>
+
+		 	<?php if(isset($connections[$user->user_id])): ?>
+	       		<p><a href='/posts/unfollow/<?=$post['post_user_id']?>'>Unfollow</a></p>
+
+	    	<?php else: ?>
+	        	<p><a href='/posts/follow/<?=$post['post_user_id']?>'>Follow</a></p>
+	    	<?php endif; ?>
+
 			<p>
 				<a href="#" id="bio" name="bio" data-type="textarea" data-pk=<?=$user->user_id?> data-url="../users/p_edit_profile"><?=$user->bio ?></a>
 			</p>	

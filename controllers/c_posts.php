@@ -13,7 +13,7 @@ class posts_controller extends base_controller {
     public function add() {
 
         # Setup view
-        $this->template->content = View::instance('v_posts_add');
+        $this->template->content1 = View::instance('v_posts_add');
         $this->template->title   = "New Post";
 
         # Render template
@@ -34,40 +34,51 @@ class posts_controller extends base_controller {
         # Note we didn't have to sanitize any of the $_POST data because we're using the insert method which does it for us
         DB::instance(DB_NAME)->insert('posts', $_POST);
 
-        # Quick and dirty feedback
-        echo "Your post has been added. <a href='/posts/add'>Add another</a>";
-
+        # Send 'em back
+        
+        Router::redirect("/users/profile");
     }
 
     public function index() {
 
         # Set up the View
-        $this->template->content = View::instance('v_posts_index');
-        $this->template->title   = "Posts";
+        $this->template->content1 = View::instance('v_posts_index');
+        $this->template->title   = "All Posts";
 
-        # Build the query
-        $q = "SELECT 
-                posts .* , 
-                users.first_name, 
+        # Query
+        $q = 'SELECT 
+                posts.content,
+                posts.created,
+                posts.user_id AS post_user_id,
+                users_users.user_id AS follower_id,
+                users.first_name,
                 users.last_name
             FROM posts
+            INNER JOIN users_users 
+                ON posts.user_id = users_users.user_id_followed
             INNER JOIN users 
-                ON posts.user_id = users.user_id";
+                ON posts.user_id = users.user_id
+            WHERE users_users.user_id = '.$this->user->user_id;
 
-        # Run the query
+        # Run the query, store the results in the variable $posts
         $posts = DB::instance(DB_NAME)->select_rows($q);
 
         # Pass data to the View
-        $this->template->content->posts = $posts;
+        $this->template->content1->posts = $posts;
+
+        # Load CSS 
+        $client_files_head = Array("../css/posts.css");
+        $this->template->client_files_head = Utils::load_client_files($client_files_head); 
 
         # Render the View
         echo $this->template;
+
     }
 
     public function users() {
 
         # Set up the View
-        $this->template->content = View::instance("v_posts_users");
+        $this->template->content1 = View::instance("v_posts_users");
         $this->template->title   = "Users";
 
         # Build the query to get all the users
@@ -91,13 +102,41 @@ class posts_controller extends base_controller {
         $connections = DB::instance(DB_NAME)->select_array($q, 'user_id_followed');
 
         # Pass data (users and connections) to the view
-        $this->template->content->users       = $users;
-        $this->template->content->connections = $connections;
+        $this->template->content1->users       = $users;
+        $this->template->content1->connections = $connections;
 
         # Render the view
         // echo '<pre>';
         // print_r($users);
         // echo '</pre>';
         echo $this->template;
+    }
+
+    public function follow($user_id_followed) {
+
+        # Prepare the data array to be inserted
+        $data = Array(
+            "created" => Time::now(),
+            "user_id" => $this->user->user_id,
+            "user_id_followed" => $user_id_followed
+            );
+
+        # Do the insert
+        DB::instance(DB_NAME)->insert('users_users', $data);
+
+        # Send them back
+        Router::redirect("/posts/users");
+
+    }
+
+public function unfollow($user_id_followed) {
+
+        # Delete this connection
+        $where_condition = 'WHERE user_id = '.$this->user->user_id.' AND user_id_followed = '.$user_id_followed;
+        DB::instance(DB_NAME)->delete('users_users', $where_condition);
+
+        # Send them back
+        Router::redirect("/posts/users");
+
     }
 }

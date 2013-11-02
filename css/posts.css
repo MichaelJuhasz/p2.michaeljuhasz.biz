@@ -1,0 +1,12 @@
+.post h1 {
+	font: bold 1.5em sans-serif;
+}
+
+.post {
+	background-color: rgba(223,232,232,.5);
+	border: 1px solid rgba(223,232,232,.8);
+}
+
+#container {
+	
+}

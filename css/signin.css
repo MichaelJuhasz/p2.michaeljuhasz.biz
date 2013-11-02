@@ -1,0 +1,9 @@
+input {
+	display: block;
+	padding: 5px;
+	margin: 10px;
+}
+
+.logo {
+	font: 15em sans-serif;
+}
