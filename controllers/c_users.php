@@ -77,14 +77,6 @@ class users_controller extends base_controller {
         # Grab token, if it's there
         $token = Token::look_for_token($_POST['email'], $_POST['password']);
 
-        // $q = "SELECT user_id FROM users WHERE email = '".$_POST['email']."'";
-
-        // $email = DB::instance(DB_NAME)->select_field($q);
-
-        // $q = "SELECT user_id FROM users WHERE email = '".$_POST['email']."' AND password = '".$_POST['password']."'";
-
-        // $password = DB::instance(DB_NAME)->select_field($q);
-
         # If we don't find a token, login fails
         if (!$token){
             Router::redirect("/users/signin/errorLogin");
@@ -190,10 +182,9 @@ class users_controller extends base_controller {
     }
 
     public function p_edit_profile(){
-
+        
         $q = [$_POST['name'] => $_POST['value'], 'modified' => Time::now()];
 
-           
         DB::instance(DB_NAME)->update('users',$q,'WHERE user_id = '.$_POST['pk']);
         Router::redirect('/users/profile');
     }
@@ -203,12 +194,12 @@ class users_controller extends base_controller {
         $_POST = DB::instance(DB_NAME)->sanitize($_POST);
 
         # Set up query to grab user info 
-        $q = "SELECT first_name, last_name, user_id, bio
+        $q = "SELECT first_name, last_name, user_id, bio, location
             FROM users
             WHERE first_name LIKE '%".$_POST['search']."%'
             OR last_name LIKE '%".$_POST['search']."%'
             OR bio LIKE '%".$_POST['search']."%'
-            OR email LIKE '%".$_POST['search']."%'";   
+            OR location LIKE '%".$_POST['search']."%'";   
 
         # Query and put the results in the $results array
         $results = DB::instance(DB_NAME)->select_rows($q);

@@ -10,6 +10,9 @@
 			    	<p>
 			    		<?=$user['bio'];?>	
 			    	</p>
+			    	<p> 
+			    		<?=$user['location'];?>
+			    	</p>
 			    </a>
 			</div>
 		</div>

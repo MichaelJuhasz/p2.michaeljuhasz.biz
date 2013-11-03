@@ -21,11 +21,14 @@
 				<p>
 					<a href="#" id="location" name="location" title="click on any element in your profile to update it" data-type="text" data-pk=<?=$user->user_id?> data-url="../users/p_edit_profile"><?=$user->location ?></a>
 					-
-					<a href="#" id="website" name="website" title="click on any element in your profile to update it" data-type="text" data-pk=<?=$user->user_id?> data-url="../users/p_edit_profile"><?=$user->website?></a>
+					<?php if(strpos($user->website, 'http://') === FALSE): ?>
+						<a href='http://<?=$user->website?>'><?=$user->website?></a>
+					<?php else: ?>
+						<a href='<?=$user->website?>'><?=$user->website?></a>
+					<?php endif; ?>	
+					<a href="#" id="website" name="website" title="click on any element in your profile to update it" data-type="text" data-pk=<?=$user->user_id?> data-url="../users/p_edit_profile"><img src='/images/editIcon.png'></a>
 				</p>
 			</div>
 
 
-<!-- <link href="/../bootstrap3-editable/css/bootstrap-editable.css"/> 
-<script src="/../bootstrap3-editable/js/bootstrap-editable.js"></script> -->
 
