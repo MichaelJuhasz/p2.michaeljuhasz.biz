@@ -16,8 +16,9 @@ class users_controller extends base_controller {
         $this->template->content1->error = $error;
         $this->template->content2->error = $error;
 
-        $client_files_head = Array("../css/signin.css");
-        $this->template->client_files_head = Utils::load_client_files($client_files_head); 
+        # This js merely adds a bit of responsiveness to the logo image 
+        $client_files_body = Array("/js/signin.js");
+        $this->template->client_files_body = Utils::load_client_files($client_files_body); 
 
         # Render template
         echo $this->template;
@@ -138,7 +139,7 @@ class users_controller extends base_controller {
             $this->template->content3->posts = Post::get_posts_by_user($this->user->user_id);
 
         # Load the title from the user object's name properties 
-            $this->template->title = "Profile of ".$this->user->first_name." ".$this->user->last_name;
+            $this->template->title = "Soapbox - Profile of ".$this->user->first_name." ".$this->user->last_name;
         
         # Load the JS and CSS that handles the x-editable stuff
             $this->template->client_files_body = '<script type="text/javascript" src="../js/profile.js"></script><link href="../bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"><script src="../bootstrap3-editable/js/bootstrap-editable.js"></script>';
@@ -163,10 +164,10 @@ class users_controller extends base_controller {
             $this->template->content3->posts = Post::get_posts_by_user($user_id);
 
         # Get the title out of $users 
-            $this->template->title = "Profile of ".$user[0]['first_name']." ".$user[0]['last_name'];
+            $this->template->title = "Soapbox - Profile of ".$user[0]['first_name']." ".$user[0]['last_name'];
         }
 
-         # Build the query to figure out what connections does this user already have? 
+         # Build the query to figure out what connections this user already has 
         $q = "SELECT * 
             FROM users_users
             WHERE user_id = ".$this->user->user_id;
@@ -204,26 +205,16 @@ class users_controller extends base_controller {
         # Query and put the results in the $results array
         $results = DB::instance(DB_NAME)->select_rows($q);
 
-    //     # Package up the array for ease of transport 
-    //     // $results = serialize($results);
-
-    //     # Ship out the data 
-    //     Router::redirect("/users/search/");
-    // }
-
-    // public function search($results = NULL){
-
-        # Unpackage data  
-        //$results = unserialize($results);
-
-         $client_files_head = Array("/css/search.css");
-        $this->template->client_files_head = Utils::load_client_files($client_files_head); 
-
         # Display results
         $this->template->content1 = View::instance('v_users_search');
 
         # Load results into template 
         $this->template->content1->results = $results;
+
+        $this->template->title = "Soapbox - Search";
+
+        $client_files_head = Array("/css/search.css");
+        $this->template->client_files_head = Utils::load_client_files($client_files_head); 
 
         echo $this->template;
     }

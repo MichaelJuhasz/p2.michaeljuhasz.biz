@@ -8,10 +8,10 @@
 			</h1>
 
 			<?php if(isset($connections[$user[0]['user_id']])): ?>
-	       			<p><a href='/posts/unfollow/<?=$post['post_user_id']?>'>Unfollow</a></p>
+	       			<p><a href='/posts/unfollow/<?=$user[0]['user_id']?>'>Unfollow</a></p>
 
 	    	<?php else: ?>
-	        		<p><a href='/posts/follow/<?=$post['post_user_id']?>'>Follow</a></p>
+	        		<p><a href='/posts/follow/<?=$$user[0]['user_id']?>'>Follow</a></p>
 	    	<?php endif; ?>
 
 			<p> 

@@ -1,7 +1,7 @@
 <div class='container' id='search_results'>
 	<?php foreach($results as $user): ?>
 		<div class='row'>	
-			<div class='col-md-6' id='search_result'>
+			<div class='col-md-6 search_result'>
 		    
 			    <a href='/users/profile/<?=$user["user_id"];?>'>
 			    	<h1>

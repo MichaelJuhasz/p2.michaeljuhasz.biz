@@ -1,16 +1,22 @@
 body {
     padding: 60px 0px 60px;
+    background-color: AliceBlue;
 }
 
-/*.input-group .form-control {
-    margin-bottom: 10px;
-}*/
+@-moz-document url-prefix(){
+	@media (max-width: 768px){
+		.navbar-collapse {
+			width: 700px;
+		}
+	}
+	@media (min-width: 768px){
+		.navbar-collapse {
+			width: 1000px;
+		}
+	}
+}
 
-/*.navbar-form{
-    margin: 10px;
-}*/
-
-/*http://www.jankoatwarpspeed.com/css-message-boxes-for-different-message-types/*/
+/*  Template for error message borrowed from: http://www.jankoatwarpspeed.com/css-message-boxes-for-different-message-types/*/
 p.error {
 	font-size       : .8em; 
 	border          : 1px solid red;
@@ -21,10 +27,6 @@ p.error {
 	background-image: url('/images/errorSmall.png');
 	background-repeat: no-repeat;
 	background-position: left center;
-}
-
-body{
-	background-color: AliceBlue;
 }
 
 /* Fonts */
@@ -45,6 +47,13 @@ a:hover{
     color: #5881A4;
 }
 
-.menu {
-    display: block;
+.center{
+
 }
+
+.accordion-toggle{
+	min-width: 100px;
+	margin: 0 10px;
+}
+
+

@@ -26,7 +26,7 @@
 					<?php else: ?>
 						<a href='<?=$user->website?>'><?=$user->website?></a>
 					<?php endif; ?>	
-					<a href="#" id="website" name="website" title="click on any element in your profile to update it" data-type="text" data-pk=<?=$user->user_id?> data-url="../users/p_edit_profile"><img src='/images/editIcon.png'></a>
+					<a href="#" id="website" name="website" title="click on any element in your profile to update it" data-type="text" data-pk=<?=$user->user_id?> data-url="../users/p_edit_profile"><img src='/images/editIcon.png' alt='edit website'></a>
 				</p>
 			</div>
 

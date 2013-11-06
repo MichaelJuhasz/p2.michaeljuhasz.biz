@@ -1,33 +1,36 @@
 <div class='container'>
 	<div class='row'>
-		<div class='col-md-5 logo'>
-			<img src='/images/logo.png' />
+		<div id='logo' class='col-md-4 col-md-offset-3 center'>
+			<img src='/images/logo.png' alt='SOAPBOX' />
 		</div>	
+	</div>
+	<div class='row'>	
 		<div id='signup-menu'>
-			<button class='col-md-2 col-md-offset-1 btn btn-info accordion-toggle' data-toggle='collapse' data-parent='#signup-menu' href='#signup'>
-				Sign up
-			</button>	 
-			<form class=' col-md-1' method='POST' action='/users/p_signup'>
+			<form class=' col-md-2 col-md-offset-2' method='POST' action='/users/p_signup'>
 				<div id='signup' class='collapse'>
-					<input type='text' name='first_name' placeholder='First Name'>
+					<input type='text' name='first_name' placeholder='First Name' required>
 
-					<input type='text' name='last_name' placeholder='Last Name'>
+					<input type='text' name='last_name' placeholder='Last Name' required>
 
-					<input type='text' name='email' placeholder='Email'>
+					<input type='text' name='email' placeholder='Email' required>
 
-					<input type='password' name='password' placeholder='Password'>
+					<input type='password' name='password' placeholder='Password' required>
 
 					<input id='signUpButton' type='submit' class='btn btn-info' value='Sign up'>
 				</div>
-				
 			</form>
+			<a class='col-md-2 btn btn-info accordion-toggle' data-toggle='collapse' data-parent='#signup-menu' href='#signup'>
+				Sign up
+			</a>	 
+
 		</div>
 		<?php if($error == "errorEmail"): ?>
 			<div class='row'>
-				<div class = 'col-md-3 col-md-offset-6'>
+				<div class = 'col-md-3 col-md-offset-7'>
 					<p class='error'>The email you entered is already in our system.</p>
 				</div>
 			</div>	
 		<?php endif; ?>
+	
 
 
