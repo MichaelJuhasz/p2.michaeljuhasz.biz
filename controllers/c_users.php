@@ -184,7 +184,7 @@ class users_controller extends base_controller {
 
     public function p_edit_profile(){
         
-        $q = [$_POST['name'] => $_POST['value'], 'modified' => Time::now()];
+        $q = array($_POST['name'] => $_POST['value'], 'modified' => Time::now());
 
         DB::instance(DB_NAME)->update('users',$q,'WHERE user_id = '.$_POST['pk']);
         Router::redirect('/users/profile');
